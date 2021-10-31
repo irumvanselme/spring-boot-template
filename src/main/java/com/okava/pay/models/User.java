@@ -1,5 +1,6 @@
 package com.okava.pay.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.okava.pay.audits.Model;
 import com.okava.pay.models.enums.ERole;
 import lombok.Getter;
@@ -37,6 +38,7 @@ public class User extends Model {
     @Column(name = "location")
     private String location;
 
+    @JsonIgnore
     @Column(name = "password")
     private String password;
 
