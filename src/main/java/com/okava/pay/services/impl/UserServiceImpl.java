@@ -1,5 +1,7 @@
 package com.okava.pay.services.impl;
 
+import com.okava.pay.utils.Utility;
+import com.okava.pay.utils.dtos.RegisterDTO;
 import com.okava.pay.utils.exceptions.ResourceNotFoundException;
 import com.okava.pay.models.User;
 import com.okava.pay.models.enums.ERole;
@@ -34,5 +36,17 @@ public class UserServiceImpl implements IUserService {
     @Override
     public Page<User> byRole(ERole role, Pageable pageable) {
         return userRepository.findByRole(role, pageable);
+    }
+
+    @Override
+    public User create(RegisterDTO dto) {
+        User user = new User();
+
+        user.setRole(ERole.USER);
+        user.setEmail(dto.getEmail());
+        user.setFullNames(dto.getFullNames());
+        user.setPassword(Utility.encode(dto.getPassword()));
+
+        return userRepository.save(user);
     }
 }
