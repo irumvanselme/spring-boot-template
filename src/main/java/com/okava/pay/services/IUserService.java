@@ -17,4 +17,6 @@ public interface IUserService {
     Page<User> byRole(ERole role, Pageable pageable);
 
     User create(RegisterDTO dto);
+
+    boolean isUnique(User user);
 }

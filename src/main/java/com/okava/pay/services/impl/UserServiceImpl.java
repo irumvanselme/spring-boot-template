@@ -2,6 +2,7 @@ package com.okava.pay.services.impl;
 
 import com.okava.pay.utils.Utility;
 import com.okava.pay.utils.dtos.RegisterDTO;
+import com.okava.pay.utils.exceptions.BadRequestException;
 import com.okava.pay.utils.exceptions.ResourceNotFoundException;
 import com.okava.pay.models.User;
 import com.okava.pay.models.enums.ERole;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -47,6 +49,15 @@ public class UserServiceImpl implements IUserService {
         user.setFullNames(dto.getFullNames());
         user.setPassword(Utility.encode(dto.getPassword()));
 
+        if (!isUnique(user))
+            throw new BadRequestException("The provided email is already used in the app");
+
         return userRepository.save(user);
+    }
+
+    @Override
+    public boolean isUnique(User user) {
+        Optional<User> userOptional = this.userRepository.findByEmailOrPhoneNumberOrNationalId(user.getEmail(), user.getPhoneNumber(), user.getNationalId());
+        return userOptional.isPresent();
     }
 }
