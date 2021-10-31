@@ -1,4 +1,4 @@
-package com.okava.pay.exceptions;
+package com.okava.pay.utils.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

@@ -1,6 +1,6 @@
 package com.okava.pay.services.impl;
 
-import com.okava.pay.exceptions.ResourceNotFoundException;
+import com.okava.pay.utils.exceptions.ResourceNotFoundException;
 import com.okava.pay.models.User;
 import com.okava.pay.models.enums.ERole;
 import com.okava.pay.repositories.IUserRepository;
