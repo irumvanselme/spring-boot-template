@@ -19,4 +19,6 @@ public interface IUserService {
     User create(RegisterDTO dto);
 
     boolean isUnique(User user);
+
+    User getLoggedInUser();
 }

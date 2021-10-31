@@ -10,6 +10,8 @@ import com.okava.pay.repositories.IUserRepository;
 import com.okava.pay.services.IUserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -59,5 +61,23 @@ public class UserServiceImpl implements IUserService {
     public boolean isUnique(User user) {
         Optional<User> userOptional = this.userRepository.findByEmailOrPhoneNumberOrNationalId(user.getEmail(), user.getPhoneNumber(), user.getNationalId());
         return userOptional.isEmpty();
+    }
+
+    @Override
+    public User getLoggedInUser() {
+        if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() == "anonymousUser")
+            throw new BadRequestException("You are not logged in, try to log in");
+
+        String email;
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof UserDetails) {
+            email = ((UserDetails) principal).getUsername();
+        } else {
+            email = principal.toString();
+        }
+
+        return userRepository.findByEmail(email).orElseThrow(
+                () -> new ResourceNotFoundException("User", "email", email));
     }
 }

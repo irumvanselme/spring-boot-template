@@ -1,5 +1,6 @@
 package com.okava.pay.controllers;
 
+import com.okava.pay.models.User;
 import com.okava.pay.services.IUserService;
 import com.okava.pay.utils.Formatter;
 import com.okava.pay.utils.dtos.LoginDTO;
@@ -60,6 +61,8 @@ public class AuthenticationController {
 
     @GetMapping("/profile")
     public ResponseEntity<ApiResponse> profile(){
-        return Formatter.done();
+        User profile = userService.getLoggedInUser();
+
+        return ResponseEntity.ok(ApiResponse.success(profile));
     }
 }
