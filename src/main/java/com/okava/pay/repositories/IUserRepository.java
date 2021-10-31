@@ -14,4 +14,6 @@ public interface IUserRepository extends JpaRepository<User, UUID> {
     Page<User> findByRole(ERole role, Pageable pageable);
 
     Optional<User> findByEmailOrPhoneNumberOrNationalId(String email, String phoneNumber, String nationalId);
+
+    Optional<User> findByEmailOrPhoneNumber(String email, String phoneNumber);
 }
